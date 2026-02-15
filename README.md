@@ -12,7 +12,7 @@
 4. Clone your forked repo into your local machine, use your user instead of `username`:
 ```sh
 git clone git@github.com:username/oneapi-2026.git
-cd oneapi-2025
+cd oneapi-2026
 ```
 5. Go to your group folder, e.g.:
 ```sh
