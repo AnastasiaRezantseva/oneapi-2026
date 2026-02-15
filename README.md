@@ -479,6 +479,7 @@ std::vector<float> JacobiKokkos(
 ## 1_permutations_cxx (102400 elements)
 |Group|Name|Result|Rank|
 |-----|----|------|----|
+|3822B1FI1|chistov_alexey|0.0672|1|
 |**REF**|**REF**|**0.2492**|**-**|
 |3822B1FI1|kabalova_valeria|TOO SLOW|-|
 
@@ -523,6 +524,14 @@ std::vector<float> JacobiKokkos(
 |**REF**|**REF**|**0.2679**|**-**|
 
 # Tasks Done
+## 3822B1FI1
+|Group|Name|Passed|Score|
+|-----|----|------|-----|
+|3822B1FI1|chistov_alexey|1/9|64|
+|3822B1FI1|kabalova_valeria|0/9|0|
+
+Passed: 0
+
 **Total Passed: 0**
 
 ---
