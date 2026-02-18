@@ -480,13 +480,14 @@ std::vector<float> JacobiKokkos(
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |3822B1FI1|chistov_alexey|0.0672|1|
+|3822B1FI1|kabalova_valeria|0.2107|2|
 |**REF**|**REF**|**0.2492**|**-**|
-|3822B1FI1|kabalova_valeria|TOO SLOW|-|
 
 ## 2_integral_oneapi (65536 elements)
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |**REF**|**REF**|**0.4723**|**-**|
+|3822B1FI1|kabalova_valeria|TEST FAILED|-|
 
 ## 3_acc_jacobi_oneapi (4096 elements)
 |Group|Name|Result|Rank|
@@ -528,7 +529,7 @@ std::vector<float> JacobiKokkos(
 |Group|Name|Passed|Score|
 |-----|----|------|-----|
 |3822B1FI1|chistov_alexey|1/9|64|
-|3822B1FI1|kabalova_valeria|0/9|0|
+|3822B1FI1|kabalova_valeria|1/9|62|
 
 Passed: 0
 
