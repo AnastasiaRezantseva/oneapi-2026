@@ -490,6 +490,7 @@ std::vector<float> JacobiKokkos(
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |**REF**|**REF**|**0.4723**|**-**|
+|3822B1FI3|lopatin_ilya|0.9945|1|
 |3822B1FI1|kabalova_valeria|TEST FAILED|-|
 
 ## 3_acc_jacobi_oneapi (4096 elements)
@@ -541,7 +542,7 @@ Passed: 0
 ## 3822B1FI3
 |Group|Name|Passed|Score|
 |-----|----|------|-----|
-|3822B1FI3|lopatin_ilya|1/9|64|
+|3822B1FI3|lopatin_ilya|2/9|128|
 
 Passed: 0
 
