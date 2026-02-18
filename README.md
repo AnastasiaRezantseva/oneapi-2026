@@ -480,6 +480,7 @@ std::vector<float> JacobiKokkos(
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |3822B1FI1|chistov_alexey|0.0672|1|
+|3822B1FI3|lopatin_ilya|0.2017|1|
 |3822B1FI1|kabalova_valeria|0.2107|2|
 |**REF**|**REF**|**0.2492**|**-**|
 
@@ -530,6 +531,13 @@ std::vector<float> JacobiKokkos(
 |-----|----|------|-----|
 |3822B1FI1|chistov_alexey|1/9|64|
 |3822B1FI1|kabalova_valeria|1/9|62|
+
+Passed: 0
+
+## 3822B1FI3
+|Group|Name|Passed|Score|
+|-----|----|------|-----|
+|3822B1FI3|lopatin_ilya|1/9|64|
 
 Passed: 0
 
