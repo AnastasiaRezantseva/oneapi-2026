@@ -492,15 +492,15 @@ std::vector<float> JacobiKokkos(
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |**REF**|**REF**|**0.4723**|**-**|
+|3822B1FI1|beskhmelnova_kseniya|0.8425|2|
 |3822B1FI1|kabalova_valeria|0.8483|1|
 |3822B1FI3|lopatin_ilya|0.9945|1|
-|3822B1FI1|beskhmelnova_kseniya|BUILD FAILED|-|
 
 ## 3_acc_jacobi_oneapi (4096 elements)
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |**REF**|**REF**|**0.2749**|**-**|
-|3822B1FI1|beskhmelnova_kseniya|BUILD FAILED|-|
+|3822B1FI1|beskhmelnova_kseniya|0.3462|1|
 |3822B1FI3|lopatin_ilya|BUILD FAILED|-|
 
 ## 4_dev_jacobi_oneapi (4096 elements)
@@ -538,10 +538,10 @@ std::vector<float> JacobiKokkos(
 ## 3822B1FI1
 |Group|Name|Passed|Score|
 |-----|----|------|-----|
-|3822B1FI1|beskhmelnova_kseniya|1/9|58|
+|3822B1FI1|beskhmelnova_kseniya|3/9|185|
 |3822B1FI1|chistov_alexey|1/9|64|
 |3822B1FI1|drozhdinov_dmitriy|1/9|60|
-|3822B1FI1|kabalova_valeria|2/9|124|
+|3822B1FI1|kabalova_valeria|2/9|123|
 |3822B1FI1|shurigin_sergey|1/9|56|
 |3822B1FI1|solovev_alexey|1/9|56|
 
