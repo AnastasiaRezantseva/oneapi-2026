@@ -1,66 +1,74 @@
 #include "jacobi_acc_oneapi.h"
 
-#include <utility>
+#include <algorithm>
+#include <buffer.hpp>
+#include <handler.hpp>
+#include <range.hpp>
+#include <reduction.hpp>
+#include <vector>
 
-std::vector<float> JacobiAccONEAPI(
-    const std::vector<float> a, const std::vector<float> b,
-    float accuracy, sycl::device device) {
-    const auto n = b.size();
+std::vector<float> JacobiAccONEAPI(const std::vector<float> a,
+                                   const std::vector<float> b, float accuracy,
+                                   sycl::device device) {
+  std::vector<float> curr_ans(b.size(), 0.0f);
+  std::vector<float> prev_ans(b.size(), 0.0f);
+  int size = b.size();
+  int step = 0;
+  float error = 0.0f;
 
-    std::vector<float> x_old(n);
-    std::vector<float> x_new(n, 0.0f);
-    std::vector<float> a_diag(n);
-    for (int i = 0; i < n; i++) a_diag[i] = a[i * n + i];
+  {
+    sycl::buffer<float, 1> buf_a(a.data(), a.size());
+    sycl::buffer<float, 1> buf_b(b.data(), b.size());
+    sycl::buffer<float, 1> buf_curr(curr_ans.data(), curr_ans.size());
+    sycl::buffer<float, 1> buf_prev(prev_ans.data(), prev_ans.size());
+    sycl::buffer<float, 1> buf_error(&error, 1);
 
-    sycl::queue q(device);
-    sycl::buffer a_buf(a.data(), sycl::range<1>(n * n));
-    sycl::buffer a_diag_buf(a_diag.data(), sycl::range<1>(n));
-    sycl::buffer b_buf(b.data(), sycl::range<1>(n));
+    while (step++ < ITERATIONS) {
 
-    float err;
-    int k = ITERATIONS;
-    do {
-        err = 0.0f;
-        std::swap(x_old, x_new);
+      sycl::queue queue(device);
 
-        sycl::buffer x_old_buf(x_old.data(), sycl::range<1>(n));
-        sycl::buffer x_new_buf(x_new.data(), sycl::range<1>(n));
-        {
-            sycl::buffer err_buf(&err, sycl::range<1>(1));
+      queue.submit([&](sycl::handler &cgh) {
+        auto in_a = buf_a.get_access<sycl::access::mode::read>(cgh);
+        auto in_b = buf_b.get_access<sycl::access::mode::read>(cgh);
+        auto in_prev = buf_prev.get_access<sycl::access::mode::read_write>(cgh);
+        auto in_curr = buf_curr.get_access<sycl::access::mode::read_write>(cgh);
 
-            q.submit([&](sycl::handler &cgh) {
-                 auto reduction = sycl::reduction(err_buf, cgh, sycl::maximum<>());
+        auto reduction = sycl::reduction(buf_error, cgh, sycl::maximum<>());
 
-                 auto in_a = a_buf.get_access<sycl::access::mode::read>(cgh);
-                 auto in_a_diag = a_diag_buf.get_access<sycl::access::mode::read>(cgh);
-                 auto in_b = b_buf.get_access<sycl::access::mode::read>(cgh);
-                 auto in_x_old = x_old_buf.get_access<sycl::access::mode::read>(cgh);
-                 auto out_x_new = x_new_buf.get_access<sycl::access::mode::write>(cgh);
+        cgh.parallel_for(sycl::range<1>(size), reduction,
+                         [=](sycl::id<1> id, auto &error) {
+                           int i = id.get(0);
+                           float curr = in_b[i];
+                           for (int j = 0; j < size; j++) {
+                             if (i != j) {
+                               curr -= in_a[i * size + j] * in_prev[j];
+                             }
+                           }
+                           curr /= in_a[i * size + i];
+                           in_curr[i] = curr;
 
-                 cgh.parallel_for(sycl::range<1>(n), reduction,
-                    [=](sycl::id<1> i, auto &err_max) {
-                        float d = 0.0f;
+                           float diff = sycl::fabs(curr - in_prev[i]);
+                           error.combine(diff);
+                         });
+      });
 
-                        int j = 0;
-                        for (; j < i; j++) {
-                            d += in_a[i * n + j] * in_x_old[j];
-                        }
-                        j++;
-                        for (; j < n; j++) {
-                            d += in_a[i * n + j] * in_x_old[j];
-                        }
+      queue.wait();
 
-                        float x = (in_b[i] - d) / in_a_diag[i];
-                        out_x_new[i] = x;
+      {
+        auto error = buf_error.get_host_access();
+        if (error[0] < accuracy)
+          break;
+        error[0] = 0.0f;
+      }
 
-                        err_max.combine(sycl::fabs(x - in_x_old[i]));
-                    }
-                );
-             }).wait();
-        }
+      {
+        auto host_curr = buf_curr.get_host_access();
+        auto host_prev = buf_prev.get_host_access();
+        for (int i = 0; i < size; i++)
+          host_prev[i] = host_curr[i];
+      }
+    }
+  }
 
-        k--;
-    } while (err >= accuracy && k > 0);
-
-    return x_new;
+  return curr_ans;
 }
