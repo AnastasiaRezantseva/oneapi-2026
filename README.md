@@ -11,8 +11,8 @@
 3. Fork this repo (just click **Fork** button on the top of the page, detailed instructions [here](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project))
 4. Clone your forked repo into your local machine, use your user instead of `username`:
 ```sh
-git clone git@github.com:username/oneapi-2025.git
-cd oneapi-2025
+git clone git@github.com:username/oneapi-2026.git
+cd oneapi-2026
 ```
 5. Go to your group folder, e.g.:
 ```sh
@@ -224,7 +224,7 @@ $|a_{ii}|>\sum_{j \neq i}|a_{ij}|$ for any $i$.
 To complete this task, one should implement the function that computes the solution for the system of linear equations using Jacobi method:
 ```cpp
 std::vector<float> JacobiAccONEAPI(
-        const std::vector<float> a, const std::vector<float> b,
+        const std::vector<float>& a, const std::vector<float>& b,
         float accuracy, sycl::device device);
 ```
 One should implement both stop methods at the same time. Use $N=1024$ as maximum iterations count and $accuracy$ argument as $Eps$. computations have to be stopped when $|x^{(k+1)}-x^{(k)}|<accuracy$ first, and if it's not happening, when after 1024 iterations.
@@ -244,7 +244,7 @@ Two files are expected to be uploaded:
 #define ITERATIONS 1024
 
 std::vector<float> JacobiAccONEAPI(
-        const std::vector<float> a, const std::vector<float> b,
+        const std::vector<float>& a, const std::vector<float>& b,
         float accuracy, sycl::device device);
 
 #endif  // __ACC_JACOBI_ONEAPI_H
@@ -254,7 +254,7 @@ std::vector<float> JacobiAccONEAPI(
 #include "acc_jacobi_oneapi.h"
 
 std::vector<float> JacobiAccONEAPI(
-        const std::vector<float> a, const std::vector<float> b,
+        const std::vector<float>& a, const std::vector<float>& b,
         float accuracy, sycl::device device) {
     // Place your implementation here
 }
@@ -276,7 +276,7 @@ Two files are expected to be uploaded:
 #define ITERATIONS 1024
 
 std::vector<float> JacobiDevONEAPI(
-        const std::vector<float> a, const std::vector<float> b,
+        const std::vector<float>& a, const std::vector<float>& b,
         float accuracy, sycl::device device);
 
 #endif  // __DEV_JACOBI_ONEAPI_H
@@ -286,7 +286,7 @@ std::vector<float> JacobiDevONEAPI(
 #include "dev_jacobi_oneapi.h"
 
 std::vector<float> JacobiDevONEAPI(
-        const std::vector<float> a, const std::vector<float> b,
+        const std::vector<float>& a, const std::vector<float>& b,
         float accuracy, sycl::device device) {
     // Place your implementation here
 }
@@ -308,7 +308,7 @@ Two files are expected to be uploaded:
 #define ITERATIONS 1024
 
 std::vector<float> JacobiSharedONEAPI(
-        const std::vector<float> a, const std::vector<float> b,
+        const std::vector<float>& a, const std::vector<float>& b,
         float accuracy, sycl::device device);
 
 #endif  // __SHARED_JACOBI_ONEAPI_H
@@ -318,7 +318,7 @@ std::vector<float> JacobiSharedONEAPI(
 #include "shared_jacobi_oneapi.h"
 
 std::vector<float> JacobiSharedONEAPI(
-        const std::vector<float> a, const std::vector<float> b,
+        const std::vector<float>& a, const std::vector<float>& b,
         float accuracy, sycl::device device) {
     // Place your implementation here
 }
@@ -353,7 +353,7 @@ Two files are expected to be uploaded:
 #include <sycl/sycl.hpp>
 
 std::vector<float> GemmBlockONEAPI(
-        const std::vector<float> a, const std::vector<float> b,
+        const std::vector<float>& a, const std::vector<float>& b,
         size_t size, sycl::device device);
 
 #endif  // __BLOCK_GEMM_ONEAPI_H
@@ -363,7 +363,7 @@ std::vector<float> GemmBlockONEAPI(
 #include "block_gemm_oneapi.h"
 
 std::vector<float> GemmBlockONEAPI(
-        const std::vector<float> a, const std::vector<float> b,
+        const std::vector<float>& a, const std::vector<float>& b,
         size_t size, sycl::device device) {
     // Place your implementation here
 }
@@ -389,7 +389,7 @@ Two files are expected to be uploaded:
 #include <sycl/sycl.hpp>
 
 std::vector<float> GemmMklONEAPI(
-        const std::vector<float> a, const std::vector<float> b,
+        const std::vector<float>& a, const std::vector<float>& b,
         size_t size, sycl::device device);
 
 #endif  // __MKL_GEMM_ONEAPI_H
@@ -399,7 +399,7 @@ std::vector<float> GemmMklONEAPI(
 #include "mkl_gemm_oneapi.h"
 
 std::vector<float> GemmMklONEAPI(
-        const std::vector<float> a, const std::vector<float> b,
+        const std::vector<float>& a, const std::vector<float>& b,
         size_t size, sycl::device device) {
     // Place your implementation here
 }
@@ -457,8 +457,8 @@ Two files are expected to be uploaded:
 #define ITERATIONS 1024
 
 std::vector<float> JacobiKokkos(
-        const std::vector<float> a,
-        const std::vector<float> b,
+        const std::vector<float>& a,
+        const std::vector<float>& b,
         float accuracy);
 
 #endif  // __JACOBI_KOKKOS_H
@@ -468,41 +468,74 @@ std::vector<float> JacobiKokkos(
 #include "jacobi_kokkos.h"
 
 std::vector<float> JacobiKokkos(
-        const std::vector<float> a,
-        const std::vector<float> b,
+        const std::vector<float>& a,
+        const std::vector<float>& b,
         float accuracy) {
     // Place your implementation here
 }
 ```
+
 # Results
 ## 1_permutations_cxx (102400 elements)
 |Group|Name|Result|Rank|
 |-----|----|------|----|
+|3822B1FI1|chistov_alexey|0.0672|1|
+|3822B1FI1|shulpin_ilya|0.0710|8|
+|3822B1FI1|beskhmelnova_kseniya|0.0844|6|
+|3822B1FI1|rezantseva_anastasia|0.1600|7|
+|3822B1FI1|drozhdinov_dmitriy|0.1613|3|
+|3822B1FI3|frolova_elizaveta|0.1951|4|
+|3822B1FI3|lopatin_ilya|0.2017|1|
+|3822B1FI1|kabalova_valeria|0.2107|2|
+|3822B1FI1|solovev_alexey|0.2119|5|
+|3822B1FI3|sozonov_ilya|0.2314|3|
+|3822B1FI1|shurigin_sergey|0.2419|4|
+|3822B1FI3|kolodkin_grigorii|0.2419|2|
 |**REF**|**REF**|**0.2492**|**-**|
 
 ## 2_integral_oneapi (65536 elements)
 |Group|Name|Result|Rank|
 |-----|----|------|----|
+|3822B1FI1|chistov_alexey|0.4474|3|
 |**REF**|**REF**|**0.4723**|**-**|
+|3822B1FI1|rezantseva_anastasia|0.5868|5|
+|3822B1FI1|shurigin_sergey|0.8417|7|
+|3822B1FI3|kolodkin_grigorii|0.8418|2|
+|3822B1FI1|beskhmelnova_kseniya|0.8425|2|
+|3822B1FI1|solovev_alexey|0.8441|4|
+|3822B1FI1|kabalova_valeria|0.8483|1|
+|3822B1FI3|lopatin_ilya|0.9945|1|
+|3822B1FI1|drozhdinov_dmitriy|0.9980|6|
 
 ## 3_acc_jacobi_oneapi (4096 elements)
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |**REF**|**REF**|**0.2749**|**-**|
+|3822B1FI1|beskhmelnova_kseniya|0.3462|1|
+|3822B1FI1|drozhdinov_dmitriy|0.5052|2|
+|3822B1FI1|chistov_alexey|TOO SLOW|-|
+|3822B1FI3|lopatin_ilya|BUILD FAILED|-|
+|3822B1FI3|kolodkin_grigorii|BUILD FAILED|-|
 
 ## 4_dev_jacobi_oneapi (4096 elements)
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |**REF**|**REF**|**0.2701**|**-**|
+|3822B1FI1|beskhmelnova_kseniya|0.5692|1|
+|3822B1FI1|chistov_alexey|BUILD FAILED|-|
+|3822B1FI3|lopatin_ilya|BUILD FAILED|-|
+|3822B1FI3|kolodkin_grigorii|BUILD FAILED|-|
 
 ## 5_shared_jacobi_oneapi (4096 elements)
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |**REF**|**REF**|**0.2633**|**-**|
+|3822B1FI1|beskhmelnova_kseniya|TOO SLOW|-|
 
 ## 6_block_gemm_oneapi (3072 elements)
 |Group|Name|Result|Rank|
 |-----|----|------|----|
+|3822B1FI1|beskhmelnova_kseniya|0.8884|1|
 |**REF**|**REF**|**0.9144**|**-**|
 
 ## 7_mkl_gemm_oneapi (3072 elements)
@@ -521,8 +554,31 @@ std::vector<float> JacobiKokkos(
 |**REF**|**REF**|**0.2679**|**-**|
 
 # Tasks Done
+## 3822B1FI1
+|Group|Name|Passed|Score|
+|-----|----|------|-----|
+|3822B1FI1|beskhmelnova_kseniya|5/9|309|
+|3822B1FI1|chistov_alexey|2/9|126|
+|3822B1FI1|drozhdinov_dmitriy|3/9|173|
+|3822B1FI1|kabalova_valeria|2/9|117|
+|3822B1FI1|rezantseva_anastasia|2/9|114|
+|3822B1FI1|shulpin_ilya|1/9|56|
+|3822B1FI1|shurigin_sergey|2/9|110|
+|3822B1FI1|solovev_alexey|2/9|111|
+
+Passed: 0
+
+## 3822B1FI3
+|Group|Name|Passed|Score|
+|-----|----|------|-----|
+|3822B1FI3|frolova_elizaveta|1/9|61|
+|3822B1FI3|kolodkin_grigorii|2/9|123|
+|3822B1FI3|lopatin_ilya|2/9|126|
+|3822B1FI3|sozonov_ilya|1/9|60|
+
+Passed: 0
+
 **Total Passed: 0**
 
 ---
-*Maximum Score: 576 (64 per task)
-*
+*Maximum Score: 576 (64 per task)*
